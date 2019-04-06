@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import it.polito.tdp.anagrammi.model.Model;
+import it.polito.tdp.anagrammi.ricorsione.CercaAnagramma;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -14,7 +15,7 @@ import javafx.scene.control.TextField;
 
 public class AnagrammiController {
 	
-	Model model;
+	CercaAnagramma cercaAnagramma;
 
     @FXML
     private ResourceBundle resources;
@@ -32,7 +33,7 @@ public class AnagrammiController {
     private TextArea txtCorretti;
 
     @FXML
-    private TextField txtErrati;
+    private TextArea txtErrati;
 
     @FXML
     private Button btnReset;
@@ -48,12 +49,21 @@ public class AnagrammiController {
     	else {
     		this.txtCorretti.setText("Inserire parola valida");
     	}
+    	
+    	for(String stemp: cercaAnagramma.ritornaCorrette(s)) {
+    		txtCorretti.appendText(stemp+"\n");
+    	}
+    	
+    	for(String stemp: cercaAnagramma.ritornaSbagliate(s)) {
+    		txtErrati.appendText(stemp+"\n");
+    	}
 
     }
 
     @FXML
     void doReset(ActionEvent event) {
-
+    	txtErrati.clear();
+    	txtCorretti.clear();
     }
 
     @FXML
@@ -66,7 +76,7 @@ public class AnagrammiController {
 
     }
     
-    public void setModel(Model model) {
-    	this.model=model;
+    public void setCercaAnagramma(CercaAnagramma cercaAnagramma) {
+    	this.cercaAnagramma=cercaAnagramma;
     }
 }

@@ -1,29 +1,55 @@
 package it.polito.tdp.anagrammi.ricorsione;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+
+import it.polito.tdp.anagrammi.DAO.AnagrammaDAO;
 
 public class CercaAnagramma {
 	
+	AnagrammaDAO adao = new AnagrammaDAO();
+	Map<String, String> soluzioni;
 	
+	public List<String> ritornaCorrette(String parola){
+		List<String> paroleCorrette = new LinkedList<String>();
+		for(String stemp:this.genera(parola).values()) {
+			if(adao.ritornaParoleCorrette(stemp)) {
+				paroleCorrette.add(stemp);
+			}
+		}
+		return paroleCorrette;
+	}
+	
+	public List<String> ritornaSbagliate(String parola){
+		List<String> paroleSbagliate = new LinkedList<String>();
+		for(String stemp:this.genera(parola).values()) {
+			if(!adao.ritornaParoleCorrette(stemp)) {
+				paroleSbagliate.add(stemp);
+			}
+		}
+		return paroleSbagliate;
+	}
 	
 	public void CercaAngramma() {
 		
 	}
 	
-	public List<String> genera(String s){
-		List<String> soluzioni = new ArrayList<String>();
+	public Map<String, String> genera(String s){
+		soluzioni = new HashMap<String,String>();
 		String parziale = "";
 		calcola(s, 0, parziale, soluzioni);
 		return soluzioni;
 	}
 	
-	public void calcola(String originale, int L, String parziale, List<String> soluzioni) {
+	public void calcola(String originale, int L, String parziale, Map<String, String> soluzioni) {
 		
 		if(L==originale.length()) {
-			soluzioni.add(parziale);
+			soluzioni.put(parziale, parziale);
 			return;
 		}
 		
